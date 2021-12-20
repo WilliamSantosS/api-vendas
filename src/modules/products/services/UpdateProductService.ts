@@ -3,7 +3,7 @@ import { getCustomRepository } from 'typeorm';
 import Product from '../typeorm/entities/Product';
 import { ProductRepository } from '../typeorm/repositories/ProductsRepository';
 
-interface IRequest {
+interface IProduct {
   id: string;
   name: string;
   price: number;
@@ -16,16 +16,16 @@ class UpdateProductService {
     name,
     price,
     quantity,
-  }: IRequest): Promise<Product> {
+  }: IProduct): Promise<Product> {
     const productRepository = getCustomRepository(ProductRepository);
 
     const product = await productRepository.findOne(id);
 
     if (!product) throw new AppError('Product not found', 404);
 
-    const productNameAlrearyExists = await productRepository.findByName(name);
+    const productNameAlreadyExists = await productRepository.findByName(name);
 
-    if (productNameAlrearyExists && name != product.name)
+    if (productNameAlreadyExists && name != product.name)
       throw new AppError('Product name already in use', 400);
 
     product.name = name;
@@ -37,4 +37,5 @@ class UpdateProductService {
     return product;
   }
 }
+
 export default UpdateProductService;

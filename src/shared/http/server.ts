@@ -23,8 +23,8 @@ app.use(
       });
     }
     return response.status(500).json({
-      error: 'Error',
-      message: 'Intertal server error',
+      error: 500,
+      message: error.message,
     });
   },
 );
