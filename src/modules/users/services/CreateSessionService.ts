@@ -1,4 +1,5 @@
 import { getCustomRepository } from 'typeorm';
+import authConfig from '@config/auth';
 import User from '@modules/users/typeorm/entities/User';
 import UsersRepository from '@modules/users/typeorm/repositories/UsersRepository';
 import appError from '@shared/errors/AppError';
@@ -34,9 +35,9 @@ class CreateSessionService {
         401,
       );
 
-    const token = sign({}, 'fbd1a2de46cfbc0262d478244dbd00c', {
+    const token = sign({}, authConfig.jwt.secret, {
       subject: user.id,
-      expiresIn: '1d',
+      expiresIn: authConfig.jwt.expiresIn,
     });
 
     return { user, token };
